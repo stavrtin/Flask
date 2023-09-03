@@ -1,0 +1,47 @@
+* {
+padding: 200;
+margin: 20;
+
+}
+
+.menu {
+	width: 100%;
+	display: table;
+}
+.menu ul {
+	display: table-row;
+}
+.menu li {
+	display: table-cell;
+	background: #2767A0;
+}
+.menu ul li:hover, .menu a:hover {
+	background: #666;
+}
+.menu li a {
+	display: block;
+	padding: 8px 15px;
+	color: #fff;
+	text-align: center;
+}
+
+
+table {
+  border-collapse: collapse;
+      }
+
+/* Нечетные строки */
+table tbody tr:nth-child(odd){
+	background: #fff;
+}
+/* Четные строки */
+table tbody tr:nth-child(even){
+	background: #F0F0F0;
+}
+
+
+th, td {
+  padding: 2px;
+  border: 1px solid grey;
+  text-align: center;
+}
