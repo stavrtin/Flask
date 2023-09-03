@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>страница_sadas</title>
+    <link rel="stylesheet" href="./static/css/style.css">
+</head>
+<body>
+<table>
+    <tr>
+        <th>Имя</th>
+        <th>Фамилия</th>
+        <th>Возраст</th>
+        <th>Рейтинг</th>
+    </tr>
+    <tr>
+        {% for item in student %}
+        <td>{{ item.name }}</td>
+        <td>{{ item.lastname }}</td>
+        <td>{{ item.age }}</td>
+        <td>{{ item.raiting }}</td>
+
+    </tr>
+    {% endfor %}
+</table>
+
+
+</body>
+</html>

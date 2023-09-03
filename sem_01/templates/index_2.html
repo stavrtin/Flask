@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>страница_sadas</title>
+    <link rel="stylesheet" href="./static/css/style.css">
+</head>
+<body>
+    {% for item in news_task %}
+    <div>
+        <h3>{{item.title}}</h3>
+        <p>{{item.body_news}}</p>
+        <p>{{item.data_public}}</p>
+    </div>
+    {% endfor %}
+
+
+</body>
+</html>

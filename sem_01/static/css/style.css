@@ -1,0 +1,23 @@
+* {
+padding: 0;
+margin: 0;
+}
+table {
+  border-collapse: collapse;
+      }
+
+/* Нечетные строки */
+table tbody tr:nth-child(odd){
+	background: #fff;
+}
+/* Четные строки */
+table tbody tr:nth-child(even){
+	background: #F0F0F0;
+}
+
+
+th, td {
+  padding: 2px;
+  border: 1px solid grey;
+  text-align: center;
+}
