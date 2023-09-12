@@ -1,0 +1,11 @@
+{% extends 'index_hw2.html' %}
+{% block title %}
+Страница приветствия
+{% endblock %}
+
+{% block content %}
+<h4>Страница приветствия</h4>
+Приветствуем пользователя <b>{{user_name}}</b> <br>
+Письмо с уведомлением отправлено на Вашу почту <b>{{user_mail}} </b><br>
+<a href="{{ url_for('input_form') }}">Выйти</a>
+{% endblock %}

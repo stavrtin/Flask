@@ -1,0 +1,13 @@
+{% extends 'index_hw2.html' %}
+{% block title %}
+Страница ввода данных о пользователе
+{% endblock %}
+
+{% block content %}
+<h4>Введите данные пользователя</h4>
+<form method="post">
+    <input type="text" name="name" placeholder="Имя"> <br><br>
+    <input type="email" name="email" placeholder="email"><br> <br>
+    <input type="submit" value="Отправить">
+</form>
+{% endblock %}
