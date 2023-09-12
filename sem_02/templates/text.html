@@ -1,0 +1,15 @@
+{% extends 'start.html' %}
+{% block title %}
+{{task}}
+{% endblock %}
+
+{% block content %}
+<h1> Форма ввода текста</h1>
+    <form method="post">
+        <textarea name="textarea_input" placeholder="Введите ваше сообщение"  rows="5" cols="30"></textarea>
+        <input type="submit">
+    </form>
+
+{% endblock %}
+
+

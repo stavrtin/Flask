@@ -1,0 +1,13 @@
+{% extends 'start.html' %}
+{% block title %}
+{{ title }}
+{% endblock %}
+{% block content %}
+
+<h1>Квадрат числа</h1>
+ <form method="post">
+      <label>Введите число</label>
+      <input type="number" name="input_number" placeholder="Введите число" required >
+      <button type="submit" name="form_auth_submit">Расчет квадрата числа</button>
+    </form>
+{% endblock %}

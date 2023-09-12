@@ -1,0 +1,15 @@
+{% extends 'start.html' %}
+{% block title %}
+{{task}}
+{% endblock %}
+
+{% block content %}
+<h1>Возраст</h1>
+<form method="post">
+    <label>Введите Ваше ИМЯ</label>
+    <input type="text" name="input_name" placeholder="Введите Ваше имя" required> <br>
+    <label>Введите Ваш возраст</label>
+    <input type="number" name="input_age" placeholder="Введите Ваш возраст" required>
+    <button type="submit" name="form_auth_submit">Передать возраст</button>
+</form>
+{% endblock %}
