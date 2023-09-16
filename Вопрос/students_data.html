@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Студенты</title>
+</head>
+<body>
+<div>
+    <p>
+        Задание №1<br>
+📌 Создать базу данных для хранения информации о студентах университета. <br>
+<br>
+           </p>
+    <hr></div>
+
+{% for student in students %}
+Студент {{student.firstname}}<br>
+факультет {{student.id_faculty}} {{student.faculty}} {{student.subjects}} <br>
+{% endfor%}
+<hr>
+{% for marks_ in marks %}
+Студент {{marks_.student_id}} предмет {{marks_.subject_id}} оценка {{marks_.mark}}  <br>
+{% endfor%}
+<hr>
+</body>
+</html>
