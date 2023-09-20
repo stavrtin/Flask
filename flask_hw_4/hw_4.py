@@ -1,27 +1,103 @@
-import sys
 import argparse
+import os
+import time
+from pathlib import Path
+import requests
+import threading
+import multiprocessing
+import asyncio
+
+image_urls = []
+with open('images.txt', 'r') as images:
+    for image in images.readlines():
+        image_urls.append(image.strip())
+
+image_path = Path('./images/')
 
 
-def create_parser():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-url")
-    return parser
+def download_image(url):
+    global image_path
+    start_time = time.time()
+    response = requests.get(url, stream=True)
+    filename = image_path.joinpath(os.path.basename(url))
+    with open(filename, "wb") as f:
+        for chunk in response.iter_content(chunk_size=1024):
+            if chunk:
+                f.write(chunk)
+    end_time = time.time() - start_time
+    print(f"Downloaded {filename} in {end_time:.2f} seconds")
 
 
-urls = [
-    "https://sportishka.com/uploads/posts/2022-11/1667498997_20-sportishka-com-p-avtomobil-marusya-instagram-22.jpg",
-    "https://sportishka.com/uploads/posts/2022-11/1667483802_12-sportishka-com-p-lada-marusya-krasivo-13.jpg",
-    "https://sportishka.com/uploads/posts/2022-11/1667560376_25-sportishka-com-p-chernaya-marusya-mashina-vkontakte-29.jpg",
-    "https://www.avtovzglyad.ru/media/article/marussia-b2-coupe-1-generation.jpg.1280x720_q85_box-0%2C108%2C2064%2C1268_crop_detail_upscale.jpg",
-    "http://www.autoade.ru/wp-content/uploads/2018/04/autowp.ru_marussia_b1_4.jpeg",
-    "http://mtdata.ru/u23/photoCD89/20751536137-0/original.jpg",
-    "https://sportishka.com/uploads/posts/2022-11/1667499021_55-sportishka-com-p-avtomobil-marusya-instagram-59.jpg",
-    "https://pibig.info/uploads/posts/2022-11/1668530913_5-pibig-info-p-marusya-krasivo-5.jpg",
-    "https://drikus.club/uploads/posts/2022-12/1671822918_drikus-club-p-gonochnaya-mashina-marusya-avtomobili-kras-22.jpg",
-    "https://w.forfun.com/fetch/cc/ccab4974d9cec7e9e121c95c737525bd.jpeg?w=1600",
-]
+async def download_image_async(url):
+    start_time = time.time()
+    response = await asyncio.get_event_loop().run_in_executor(None, requests.get, url, {"stream": True})
+    filename = image_path.joinpath(os.path.basename(url))
+    with open(filename, "wb") as f:
+        for chunk in response.iter_content(chunk_size=1024):
+            if chunk:
+                f.write(chunk)
+    end_time = time.time() - start_time
+    print(f"Downloaded {filename} in {end_time:.2f} seconds")
+
+
+def download_images_threading(urls):
+    start_time = time.time()
+    threads = []
+    for url in urls:
+        t = threading.Thread(target=download_image, args=(url,))
+        t.start()
+        threads.append(t)
+
+    for t in threads:
+        t.join()
+
+    end_time = time.time() - start_time
+    print(f"Total time using threading: {end_time:.2f} seconds")
+
+
+def download_images_multiprocessing(urls):
+    start_time = time.time()
+    processes = []
+    for url in urls:
+        p = multiprocessing.Process(target=download_image, args=(url,))
+        p.start()
+        processes.append(p)
+
+    for p in processes:
+        p.join()
+
+    end_time = time.time() - start_time
+    print(f"Total time using multiprocessing: {end_time:.2f} seconds")
+
+
+async def download_images_asyncio(urls):
+    start_time = time.time()
+    tasks = []
+    for url in urls:
+        task = asyncio.ensure_future(download_image_async(url))
+        tasks.append(task)
+
+    await asyncio.gather(*tasks)
+
+    end_time = time.time() - start_time
+    print(f"Total time using asyncio: {end_time:.2f} seconds")
+
 
 if __name__ == "__main__":
-    parser = create_parser()
-    namespace = parser.parse_args(sys.argv[1:])
-    urls.append(namespace.url)
+    parser = argparse.ArgumentParser(description="Download images from URLs and save them to disk.")
+    parser.add_argument("--urls", nargs="+", help="A list of URLs to download images from.")
+    args = parser.parse_args()
+
+    urls = args.urls
+    if not urls:
+        urls = image_urls
+
+    print(f"Downloading {len(urls)} images using threading...")
+    download_images_threading(urls)
+
+    print(f"\nDownloading {len(urls)} images using multiprocessing...")
+    download_images_multiprocessing(urls)
+
+    print(f"\nDownloading {len(urls)} images using asyncio...")
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(download_images_asyncio(urls))
