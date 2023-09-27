@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from db import users_tab, database
 from models.users_model import User, UserIn
 from sqlalchemy import select
@@ -18,8 +18,31 @@ async def create_note(count: int):
     return {'message': f'{count} fake users create'}
 
 
-@router.get("/users/", response_model=list[User])
+# @router.get("/users/", response_model=List[User])
+@router.get("/users/")
 async def view_user():
     query = users_tab.select()
+    # await database.execute(query)
     return await database.fetch_all(query)
 
+
+@router.post("/users/", response_model=UserIn)
+async def create_user(user: UserIn):
+    query = users_tab.insert().values(
+        username=user.username,
+        email=user.email,
+        password=user.password
+        )
+    last_record_id = await database.execute(query)
+    return {**user.dict(), "id": last_record_id}
+
+@router.get("/users/{user_id}", response_model=User)
+async def read_user(user_id: int):
+    query = users_tab.select().where(users_tab.c.id == user_id)
+    return await database.fetch_one(query)
+
+@router.delete("/users/{user_id}")
+async def delete_user(user_id: int):
+    query = users_tab.delete().where(users_tab.c.id == user_id)
+    await database.execute(query)
+    return {'message': 'User deleted'}
