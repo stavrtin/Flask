@@ -1,10 +1,11 @@
-from pydantic import Field, BaseModel, EmailStr
+from pydantic import Field
+from fastapi import FastAPI
+from pydantic import BaseModel, EmailStr
 
-class OrderIn(BaseModel):
+
+
+class Order(BaseModel):
     user_id: int
-    prod_id: int
-    date_order: str
-
-
-class Order(OrderIn):
+    prod_id: str
+    order_date: str
     status: str
