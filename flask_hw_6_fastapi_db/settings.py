@@ -13,4 +13,4 @@ class Settings(BaseSettings):
 
 settings = Settings()
 
-Settings(DATABASE_URL="sqlite:///prod_ord_user.db.db")
+Settings(DATABASE_URL="sqlite:///my_database_hw.db")
